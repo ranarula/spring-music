@@ -4,7 +4,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: datianshi/gradle
+    repository: gradle/jdk8
     tag: "latest"
 inputs:
   - name: music-repo
