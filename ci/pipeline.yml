@@ -30,7 +30,7 @@ resources:
   source:
     uri: git@github.com:akirasoft/spring-music.git
     branch: master
-    private_key: ((github-access-token))
+    private_key: ((concourse-key))
 
 - name: version
   type: semver
@@ -45,6 +45,7 @@ resources:
   type: s3
   source:
     bucket: music-pipeline-artifacts
+    region_name: us-west-2
     regexp: spring-music-(.*).war
     access_key_id: ((s3-access-key-id))
     secret_access_key: ((s3-secret-access-key))
