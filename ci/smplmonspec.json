@@ -1,8 +1,8 @@
 {
-    "SampleJSonService" : {
+    "SpringMusic" : {
         "etype": "SERVICE",
         "_comment_etype" : "Options are SERVICE, APPLICATION, HOST, PROCESS_GROUP_INSTANCE",
-        "name": "SampleNodeJsService",
+        "name": "SpringMusic",
         "owner" : "TeamMike",
         "_comment" : "This defines our initial thoughts about monitoring!",
         "environments" : { 
