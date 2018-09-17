@@ -6,6 +6,6 @@ version=`cat version/number`
 cd music-repo
 #echo $version
 ./gradlew assemble -PVersion=$version
-#ls build/libs/
-mv build/libs/spring-music-*.jar ~/workspace/
+ls build/libs/
+#mv build/libs/spring-music-*.jar ~/workspace/
 
