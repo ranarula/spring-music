@@ -7,3 +7,5 @@ cd music-repo
 #echo $version
 ./gradlew assemble -PVersion=$version
 #ls build/libs/
+ls -la ./music-repo/build/libs/spring-music-*
+
