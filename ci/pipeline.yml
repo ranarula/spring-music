@@ -110,7 +110,7 @@ jobs:
     timeout: 5m
   - put: music-release
     params:
-      file: music-repo/build/libs/spring-music-*.jar
+      file: workspace/spring-music-*.jar
   - put: music-repo
     params:
       repository: music-repo
