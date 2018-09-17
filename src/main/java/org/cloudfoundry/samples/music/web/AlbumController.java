@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 @RestController
@@ -17,11 +19,22 @@ public class AlbumController {
     private CrudRepository<Album, String> repository;
     private int processingTime;
 
+
+    private void retrieveProcessingTimeFromEnv() {
+        Map<String, String> env = System.getenv();
+        if(env.get("DELAY") != null ) {
+            this.processingTime = Integer.parseInt(env.get("DELAY"));
+            System.out.println("# workshop # used processing time: " + this.processingTime);
+        }
+    }
+
      /**
      * Just simulates some processing
      */
     public void doProcessing() {
-          if(processingTime <= 0) processingTime = 10;
+          if(processingTime <= 0){
+              processingTime = 10;
+          } 
           try {
                 java.lang.Thread.sleep(processingTime);
         } catch (InterruptedException e) {
@@ -32,6 +45,7 @@ public class AlbumController {
     @Autowired
     public AlbumController(CrudRepository<Album, String> repository) {
         this.repository = repository;
+        retrieveProcessingTimeFromEnv();
     }
 
     @RequestMapping(method = RequestMethod.GET)

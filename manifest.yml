@@ -1,0 +1,9 @@
+---
+applications:
+- name: spring-music
+  memory: 1G
+  instances: 1
+  path: ./build/libs/spring-music-1.0.jar
+  buildpack: java_buildpack_offline
+  env:
+    DELAY: 4711
