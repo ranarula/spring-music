@@ -126,23 +126,28 @@ jobs:
     trigger: true
     passed: 
       - build-binary
-    params:
-      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
-      PCF_API: ((pcf-stage-api))
-      PCF_ORG: ((pcf-stage-organization))
-      PCF_USER: ((stage-deploy-username))
-      PCF_PWD: ((stage-deploy-password))
-      PCF_SPACE: ((pcf-stage-space))
+    # params:
+    #   PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
+    #   PCF_API: ((pcf-stage-api))
+    #   PCF_ORG: ((pcf-stage-organization))
+    #   PCF_USER: ((stage-deploy-username))
+    #   PCF_PWD: ((stage-deploy-password))
+    #   PCF_SPACE: ((pcf-stage-space))
   - get: version
   - get: music-release
+  - task: prepare-app-manifest
+    file: music-repo/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))      
   - put: dynatrace
     params:
       monspecserviceenvironment: SpringMusic/Staging
       pipelinetaskname: ConcourseDeploy
-      deployversion: version/number
+      #deployversion: version/number
+      deployversion: 1.0.1
   - put: PCF-Stage
     params:
-      manifest: music-repo/app/manifest.yml
+      manifest: app-manifest-output/manifest.yml
       path: music-release/spring-music-*.jar
 
 # - name: load-tests

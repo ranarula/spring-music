@@ -8,11 +8,12 @@ image_resource:
     tag: "latest"
 
 inputs:
-- name: PivotalDevOpsTutorial
+- name: music-repo
 - name: current-app-info
+  optional: true
 
 outputs:
 - name: app-manifest-output
 
 run:
-  path: ./PivotalDevOpsTutorial/ci/tasks/app-manifest-prep
+  path: ./music-repo/ci/tasks/app-manifest-prep

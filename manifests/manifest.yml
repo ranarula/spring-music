@@ -2,11 +2,11 @@
 applications:
 - name: APPNAME
   memory: 1G
-  path: build/libs/spring-music-1.0.jar
+  #path: build/libs/spring-music-1.0.jar
   buildpack: java_buildpack_offline
   env:
     DT_NODE_ID: APPNAME
     DT_CUSTOM_PROP: DEPLOYMENT_GRP_NAME=SPRING-MUSIC-DTGRP DEPLOYMENT_COLOR=SPRING-MUSIC-APPCOLOR
     BUILD_NUMBER: 2
     DEPLOYMENT_GRP_NAME: SPRING-MUSIC-DTGRP
-    DUMMY_VAR: changethisagain  
+    DELAY: 0  

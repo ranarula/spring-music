@@ -8,10 +8,10 @@ image_resource:
     tag: "latest"
 
 inputs:
-- name: PivotalDevOpsTutorial
+- name: music-repo
 
 outputs:
 - name: current-app-info
 
 run:
-  path: ./PivotalDevOpsTutorial/ci/tasks/current-app-get-info
+  path: ./music-repo/ci/tasks/current-app-get-info
