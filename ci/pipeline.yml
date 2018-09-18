@@ -144,7 +144,7 @@ jobs:
       monspecserviceenvironment: SpringMusic/Staging
       pipelinetaskname: ConcourseDeploy
       #deployversion: version/number
-      deployversion: 1.0.1
+      deployversion: 1.0.6
       APP_REPO: music-repo
   - put: PCF-Stage
     params:
