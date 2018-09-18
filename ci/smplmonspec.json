@@ -11,7 +11,7 @@
                     {
                         "context": "CONTEXTLESS",
                         "key": "DeploymentGroup", 
-                        "value": "SPRING-MUSIC-Staging"
+                        "value": "SPRING-MUSIC-Stage"
                     }                
                 ]
             },
