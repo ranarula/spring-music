@@ -11,14 +11,7 @@ scenarios:
         headers: 
           x-Dynatrace: 'NA=Test.Homepage;'
     - get:
-        url: "/version"
+        url: "/albums"
         headers: 
-          x-Dynatrace: 'NA=Test.Version;'
-    - get:
-        url: "/api/echo?text=This is from a testing script"
-        headers: 
-          x-Dynatrace: 'NA=Test.Echo;'
-    - get:
-        url: '/api/invoke?url=http://www.dynatrace.com'
-        headers: 
-          x-Dynatrace: 'NA=Test.Invoke;'
+          x-Dynatrace: 'NA=Test.Albums;'
+  
