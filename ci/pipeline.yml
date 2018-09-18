@@ -145,6 +145,7 @@ jobs:
       pipelinetaskname: ConcourseDeploy
       #deployversion: version/number
       deployversion: 1.0.1
+      APP_REPO: music-repo
   - put: PCF-Stage
     params:
       manifest: app-manifest-output/manifest.yml
