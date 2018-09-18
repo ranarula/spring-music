@@ -11,4 +11,4 @@ eval monspecserviceenvironment=$monspecserviceenvironment
 echo "Pushing Dynatrace monspec data for $monspecserviceenvironment after waiting 120s for data to hit Dynatrace"
 sleep 120
 echo "Current seconds since epoch is $(date -u +%s)"
-python /dtcli/dtcli.py monspec push ./PivotalDevOpsTutorial/ci/smplmonspec.json ./PivotalDevOpsTutorial/ci/smplpipelineinfo.json $monspecserviceenvironment 6 1
+python /dtcli/dtcli.py monspec push ./music-repo/ci/smplmonspec.json ./music-repo/ci/smplpipelineinfo.json $monspecserviceenvironment 6 1
