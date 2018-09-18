@@ -11,4 +11,4 @@ GRADLE_CACHE="${ROOT_FOLDER}/gradle"
 export GRADLE_OPTS=-Dorg.gradle.native=false
 cd music-repo
 ./gradlew -v
-./gradlew test
+./gradlew test --no-daemon

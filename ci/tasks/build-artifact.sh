@@ -11,7 +11,7 @@ GRADLE_CACHE="${ROOT_FOLDER}/gradle"
 version=`cat version/number`
 cd music-repo
 echo $version
-./gradlew assemble
+./gradlew assemble --no-daemon
 ls -la build/libs/
 mv build/libs/music-repo-*.jar ../workspace/spring-music-$version.jar
 ls -la ../workspace/
