@@ -2,7 +2,8 @@
 applications:
 - name: APPNAME
   memory: 1G
-  buildpacks: java_buildpack_offline
+  buildpacks: 
+    - java_buildpack_offline
   env:
     DT_NODE_ID: APPNAME
     DT_CUSTOM_PROP: DEPLOYMENT_GRP_NAME=SPRING-MUSIC-DTGRP DEPLOYMENT_COLOR=SPRING-MUSIC-APPCOLOR
