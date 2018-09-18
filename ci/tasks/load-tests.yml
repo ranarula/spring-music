@@ -10,6 +10,7 @@ image_resource:
 inputs:
 - name: music-repo
 - name: current-app-info
+  optional: true
 
 run:
   path: ./music-repo/ci/tasks/load-tests
