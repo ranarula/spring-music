@@ -47,7 +47,7 @@ resources:
   source:
     bucket: autonomous-pipeline-music-artifacts
     region_name: us-west-2
-    regexp: spring-music-(.*).war
+    regexp: spring-music-(.*).jar
     access_key_id: ((s3-access-key-id))
     secret_access_key: ((s3-secret-access-key))
 
