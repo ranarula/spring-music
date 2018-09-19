@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 echo "configuring Dynatrace CLI with $apitoken and $tenanthost"
 
@@ -19,6 +19,7 @@ echo "Validating load test results via monspec comparison $monspeccomparison"
 python /dtcli/dtcli.py monspec pullcompare ./music-repo/ci/smplmonspec.json ./music-repo/ci/smplpipelineinfo.json $monspeccomparison 10 > monspecpullcompare.json
 jq '.' monspecpullcompare.json
 totalViolations="$(jq -r '.totalViolations' monspecpullcompare.json)"
+echo $totalViolations
 if [ $totalViolations -gt 0 ]; then
 echo "We encountered $totalViolations monspec violations, failing build"
 exit 1
