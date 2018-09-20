@@ -126,13 +126,6 @@ jobs:
     trigger: true
     passed: 
       - build-binary
-    # params:
-    #   PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
-    #   PCF_API: ((pcf-stage-api))
-    #   PCF_ORG: ((pcf-stage-organization))
-    #   PCF_USER: ((stage-deploy-username))
-    #   PCF_PWD: ((stage-deploy-password))
-    #   PCF_SPACE: ((pcf-stage-space))
   - get: version
   - get: music-release
   - task: prepare-app-manifest
@@ -144,7 +137,6 @@ jobs:
       monspecserviceenvironment: SpringMusic/Staging
       pipelinetaskname: ConcourseDeploy
       VERSION_FILE: version/number
-      #deployversion: 1.0.5
       APP_REPO: music-repo
   - put: PCF-Stage
     params:
@@ -222,12 +214,12 @@ jobs:
     params:
       PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
       PRODUCTION: true  
-  # - put: dynatrace
-  #   params:
-  #     monspecserviceenvironment: SpringMusic/Production
-  #     pipelinetaskname: ConcourseDeploy
-  #     VERSION_FILE: version/number
-  #     APP_REPO: music-repo 
+  - put: dynatrace
+    params:
+      monspecserviceenvironment: SpringMusic/Production
+      pipelinetaskname: ConcourseDeploy
+      VERSION_FILE: version/number
+      APP_REPO: music-repo 
   - put: PCF-Prod
     params:
       manifest: app-manifest-output/manifest.yml
