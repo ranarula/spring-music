@@ -137,7 +137,7 @@
             },
             {
                 "smartscape" : "toRelationships:calls",
-                "upperlimit" : "1",
+                "upperlimit" : "10",
                 "aggregate" : "count",
                 "validate" : "lower"
             },
@@ -157,7 +157,7 @@
         "_comment_perfsignature" : "this is the list of key metrics that make up your performance signature. we will then compare these metrics against the compare enviornment or a static threshold",
         "servicemethods" : [
             { 
-                "name" : "/api/invoke",
+                "name" : "/not/used",
                 "perfsignature" : [
                     { 
                         "timeseries" : "com.dynatrace.builtin:servicemethod.responsetime",
