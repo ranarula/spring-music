@@ -275,8 +275,8 @@ jobs:
   - task: validate-via-monspec
     file: music-repo/ci/tasks/validate-via-monspec.yml
     params: 
-      #monspeccomparison: SpringMusic/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
-      monspeccomparison: SpringMusic/ProductionToProductionLast5m
+      monspeccomparison: SpringMusic/Production-$NEXT_APP_COLOR\ToProduction-$CURRENT_APP_COLOR\Last5m
+      #monspeccomparison: SpringMusic/ProductionToProductionLast5m
       apitoken: ((apitoken))
       tenanthost: ((tenanthost))    
 
