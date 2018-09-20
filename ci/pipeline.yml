@@ -143,8 +143,8 @@ jobs:
     params:
       monspecserviceenvironment: SpringMusic/Staging
       pipelinetaskname: ConcourseDeploy
-      #deployversion: version/number
-      deployversion: 1.0.5
+      VERSION_FILE: version/number
+      #deployversion: 1.0.5
       APP_REPO: music-repo
   - put: PCF-Stage
     params:
@@ -179,6 +179,15 @@ jobs:
     trigger: true
     passed:
       - load-tests
+  - task: get-current-app-color
+    file: music-repo/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))        
   - task: validate-via-monspec
     file: music-repo/ci/tasks/validate-via-monspec.yml
     params: 
@@ -217,8 +226,7 @@ jobs:
   #   params:
   #     monspecserviceenvironment: SpringMusic/Production
   #     pipelinetaskname: ConcourseDeploy
-  #     #deployversion: version/number
-  #     deployversion: 1.0.5
+  #     VERSION_FILE: version/number
   #     APP_REPO: music-repo 
   - put: PCF-Prod
     params:
