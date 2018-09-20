@@ -16,7 +16,7 @@ echo "Validating load test results via monspec comparison $monspeccomparison"
 
 # fetching monspec comparison results, pretty-printing them, then failing if totalViolations > 0 via POSIX compliant logic for portability
 
-python /dtcli/dtcli.py monspec pullcompare ./music-repo/ci/smplmonspec.json ./music-repo/ci/smplpipelineinfo.json $monspeccomparison 10 > monspecpullcompare.json
+python /dtcli/dtcli.py monspec pullcompare ./music-repo/ci/smplmonspec.json ./music-repo/ci/smplpipelineinfo.json $monspeccomparison 5 > monspecpullcompare.json
 jq '.' monspecpullcompare.json
 totalViolations="$(jq -r '.totalViolations' monspecpullcompare.json)"
 echo $totalViolations
