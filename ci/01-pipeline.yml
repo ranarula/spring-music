@@ -1,0 +1,205 @@
+groups:
+- name: main
+  jobs:
+  - unit
+  - build-binary
+  - deploy-app
+  - load-tests
+  - push-to-prod
+  - load-tests-prod
+  - promote-new-version
+
+resources:
+- name: music-repo
+  type: git
+  source:
+    uri: git@github.com:akirasoft/spring-music.git
+    branch: master
+    private_key: ((concourse-key))
+
+- name: version
+  type: semver
+  source:
+    bucket: autonomous-pipeline-music-artifacts
+    region_name: us-west-2
+    key: current-version
+    access_key_id: ((s3-access-key-id))
+    secret_access_key: ((s3-secret-access-key))
+    initial_version: 1.0.0
+
+- name: music-release
+  type: s3
+  source:
+    bucket: autonomous-pipeline-music-artifacts
+    region_name: us-west-2
+    regexp: spring-music-(.*).jar
+    access_key_id: ((s3-access-key-id))
+    secret_access_key: ((s3-secret-access-key))
+
+- name: PCF-Stage
+  type: cf
+  source:
+    api: ((pcf-stage-api))
+    organization: ((pcf-stage-organization))
+    username: ((stage-deploy-username))
+    password: ((stage-deploy-password))
+    skip_cert_check: true
+    space: ((pcf-stage-space))
+    current_app_name: ((pcf-stage-app-suffix))
+
+- name: PCF-Prod
+  type: cf
+  source:
+    api: ((pcf-prod-api))
+    organization: ((pcf-prod-organization))
+    username: ((prod-deploy-username))
+    password: ((prod-deploy-password))
+    skip_cert_check: true
+    space: ((pcf-prod-space))
+    current_app_name: ((pcf-prod-app-suffix))
+    
+jobs:
+- name: unit
+  plan:
+  - get: music-repo
+    trigger: true
+  - task: unit
+    file: music-repo/ci/tasks/unit.yml
+
+- name: build-binary
+  serial: true
+  plan:
+  - get: music-repo
+    passed: [unit]
+    trigger: true
+  - get: version
+    params: {bump: patch}
+  - task: build-artifact
+    file: music-repo/ci/tasks/build-artifact.yml
+    timeout: 5m
+  - put: music-release
+    params:
+      file: workspace/spring-music-*.jar
+  - put: music-repo
+    params:
+      repository: music-repo
+      tag: version/number
+  - put: version
+    params: {file: version/number}
+
+- name: deploy-app
+  serial: true
+  public: true
+  plan:
+  - get: music-repo
+    trigger: true
+    passed: 
+      - build-binary
+  - get: version
+  - get: music-release
+  - task: prepare-app-manifest
+    file: music-repo/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))      
+  - put: PCF-Stage
+    params:
+      manifest: app-manifest-output/manifest.yml
+      path: music-release/spring-music-*.jar
+
+- name: load-tests
+  serial: true
+  public: true
+  plan:    
+  - get: music-repo
+    trigger: true
+    passed:
+      - deploy-app
+  - task: run-load-tests
+    file: music-repo/ci/tasks/load-tests.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
+      PCF_APP_DOMAIN: ((pcf-stage-app-domain))
+
+- name: push-to-prod
+  serial: true
+  public: true
+  plan:  
+  - get: music-repo
+    trigger: false
+    passed:
+      - load-tests
+  - get: version
+  - get: music-release
+  - task: prepare-app-manifest
+    file: music-repo/ci/tasks/app-manifest-prep.yml      
+  - task: get-current-app-color
+    file: music-repo/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))  
+  - task: prepare-app-manifest
+    file: music-repo/ci/tasks/app-manifest-prep.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PRODUCTION: true  
+  - put: PCF-Prod
+    params:
+      manifest: app-manifest-output/manifest.yml
+      path: music-release/spring-music-*.jar
+
+- name: load-tests-prod
+  serial: true
+  public: true
+  plan:
+  - get: music-repo
+    trigger: true
+    passed:
+      - push-to-prod
+  - task: get-current-app-color
+    file: music-repo/ci/tasks/current-app-get-info.yml      
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))
+  - task: run-load-tests
+    file: music-repo/ci/tasks/load-tests.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))
+      PRODUCTION: true 
+
+- name: promote-new-version
+  serial: true
+  public: true
+  plan:
+  - get: music-repo
+    trigger: false
+    passed:
+      - load-tests-prod
+  - task: get-current-app-color
+    file: music-repo/ci/tasks/current-app-get-info.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))
+  - task: switch-app-routes
+    file: music-repo/ci/tasks/update-routes.yml
+    params:
+      PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      PCF_APP_DOMAIN: ((pcf-prod-app-domain))
+      PCF_API: ((pcf-prod-api))
+      PCF_ORG: ((pcf-prod-organization))
+      PCF_USER: ((prod-deploy-username))
+      PCF_PWD: ((prod-deploy-password))
+      PCF_SPACE: ((pcf-prod-space))      
+                 
