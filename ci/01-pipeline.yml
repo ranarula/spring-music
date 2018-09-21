@@ -129,9 +129,7 @@ jobs:
     passed:
       - load-tests
   - get: version
-  - get: music-release
-  - task: prepare-app-manifest
-    file: music-repo/ci/tasks/app-manifest-prep.yml      
+  - get: music-release 
   - task: get-current-app-color
     file: music-repo/ci/tasks/current-app-get-info.yml
     params:
