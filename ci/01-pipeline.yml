@@ -13,9 +13,10 @@ resources:
 - name: music-repo
   type: git
   source:
-    uri: git@github.com:akirasoft/spring-music.git
+    uri: https://github.com/akirasoft/spring-music.git
     branch: master
-    private_key: ((concourse-key))
+    username: ((github-username))
+    password: ((github-password))
 
 - name: version
   type: semver
