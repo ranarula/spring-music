@@ -28,14 +28,15 @@ resources:
 - name: music-repo
   type: git
   source:
-    uri: git@github.com:akirasoft/spring-music.git
+    uri: https://github.com/akirasoft/spring-music.git
     branch: master
-    private_key: ((concourse-key))
+    username: ((github-username))
+    password: ((github-password))
 
 - name: version
   type: semver
   source:
-    bucket: autonomous-pipeline-music-artifacts
+    bucket: ((s3-bucket-name))
     region_name: us-west-2
     key: current-version
     access_key_id: ((s3-access-key-id))
@@ -45,7 +46,7 @@ resources:
 - name: music-release
   type: s3
   source:
-    bucket: autonomous-pipeline-music-artifacts
+    bucket: ((s3-bucket-name))
     region_name: us-west-2
     regexp: spring-music-(.*).jar
     access_key_id: ((s3-access-key-id))
