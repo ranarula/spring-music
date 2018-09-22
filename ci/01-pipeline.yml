@@ -23,7 +23,7 @@ resources:
   source:
     bucket: ((s3-bucket-name))
     region_name: us-west-2
-    key: current-version
+    key: workshop99/current-version
     access_key_id: ((s3-access-key-id))
     secret_access_key: ((s3-secret-access-key))
     initial_version: 1.0.0
@@ -33,7 +33,7 @@ resources:
   source:
     bucket: ((s3-bucket-name))
     region_name: us-west-2
-    regexp: spring-music-(.*).jar
+    regexp: workshop99/spring-music-(.*).jar
     access_key_id: ((s3-access-key-id))
     secret_access_key: ((s3-secret-access-key))
 
