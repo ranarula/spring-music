@@ -4,7 +4,7 @@ set -ex
 
 echo "configuring Dynatrace CLI with $apitoken and $tenanthost"
 
-python /dtcli/dtcli.py config apitoken $apitoken tenanthost $tenanthost debug 1
+python /dtcli/dtcli.py config apitoken $apitoken tenanthost $tenanthost debug 0
 
 export NEXT_APP_COLOR=$(cat ./current-app-info/next-app.txt)
 export CURRENT_APP_COLOR=$(cat ./current-app-info/current-app.txt)
