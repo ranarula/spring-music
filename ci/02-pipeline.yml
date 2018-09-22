@@ -200,8 +200,6 @@ jobs:
       - validate-stage-load-test
   - get: version
   - get: music-release
-  - task: prepare-app-manifest
-    file: music-repo/ci/tasks/app-manifest-prep.yml      
   - task: get-current-app-color
     file: music-repo/ci/tasks/current-app-get-info.yml
     params:
