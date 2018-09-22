@@ -101,7 +101,8 @@ jobs:
   - task: prepare-app-manifest
     file: music-repo/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))      
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
+      WORKSHOPNUM: ((workshopnum))
   - put: PCF-Stage
     params:
       manifest: app-manifest-output/manifest.yml
@@ -144,6 +145,7 @@ jobs:
     file: music-repo/ci/tasks/app-manifest-prep.yml
     params:
       PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      WORKSHOPNUM: ((workshopnum))      
       PRODUCTION: true  
   - put: PCF-Prod
     params:

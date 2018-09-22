@@ -132,7 +132,8 @@ jobs:
   - task: prepare-app-manifest
     file: music-repo/ci/tasks/app-manifest-prep.yml
     params:
-      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))      
+      PCF_APP_SUFFIX: ((pcf-stage-app-suffix))
+      WORKSHOPNUM: ((workshopnum))           
   - put: dynatrace
     params:
       monspecserviceenvironment: SpringMusic/Staging
@@ -214,6 +215,7 @@ jobs:
     file: music-repo/ci/tasks/app-manifest-prep.yml
     params:
       PCF_APP_SUFFIX: ((pcf-prod-app-suffix))
+      WORKSHOPNUM: ((workshopnum))      
       PRODUCTION: true  
   - put: dynatrace
     params:
